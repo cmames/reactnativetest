@@ -12,11 +12,11 @@ env:
   APP_NAME: "reactnativetest"
   NODE_VERSION: '18.x'
   # for Android
-  BUILD_ANDROID_FLAG: true
-  DEPLOY_ANDROID_FLAG: true
+  BUILD_ANDROID_FLAG: 'true'
+  DEPLOY_ANDROID_FLAG: 'true'
   # for IoS
-  BUILD_IOS_FLAG: false
-  DEPLOY_IOS_FLAG: false
+  BUILD_IOS_FLAG: 'false'
+  DEPLOY_IOS_FLAG: 'false'
 
 permissions:
   actions: write
