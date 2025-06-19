@@ -12,11 +12,11 @@ env:
   APP_NAME: "reactnativetest"
   NODE_VERSION: '18.x'
   # for Android
-  BUILD_ANDROID_FLAG: 'true'
-  DEPLOY_ANDROID_FLAG: 'true'
+  BUILD_ANDROID_FLAG: true
+  DEPLOY_ANDROID_FLAG: true
   # for IoS
-  BUILD_IOS_FLAG: 'false'
-  DEPLOY_IOS_FLAG: 'false'
+  BUILD_IOS_FLAG: false
+  DEPLOY_IOS_FLAG: false
 
 permissions:
   actions: write
@@ -26,7 +26,7 @@ jobs:
   build-android:
     name: Build Android
     runs-on: ubuntu-latest
-    if: ${{ github.env.BUILD_ANDROID_FLAG }} == 'true'
+    if: ${{ github.env.BUILD_ANDROID_FLAG == 'true' }}
 
     steps:
       - name: Checkout code
@@ -105,7 +105,7 @@ jobs:
   build-ios:
     name: Build iOS
     runs-on: macos-latest
-    if: ${{ github.env.BUILD_IOS_FLAG }} == 'true'
+    if: ${{ github.env.BUILD_IOS_FLAG == 'true' }}
 
     steps:
       - name: Checkout code
@@ -256,7 +256,7 @@ jobs:
     name: Deploy to Android Store
     needs: build-android
     runs-on: ubuntu-latest
-    if: ${{ github.env.DEPLOY_ANDROID_FLAG }}== 'true' && success() && github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: ${{ github.env.DEPLOY_ANDROID_FLAG == 'true' }} && success() && github.ref == 'refs/heads/main' && github.event_name == 'push'
     
     steps:
       - name: Checkout code
@@ -290,7 +290,7 @@ jobs:
     name: Deploy to iOS Store
     needs: build-ios
     runs-on: ubuntu-latest
-    if: ${{ github.env.DEPLOY_IOS_FLAG }}== 'true' && success() && github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: ${{ github.env.DEPLOY_IOS_FLAG == 'true' }} && success() && github.ref == 'refs/heads/main' && github.event_name == 'push'
     
     steps:
       - name: Checkout code
