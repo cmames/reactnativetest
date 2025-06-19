@@ -26,7 +26,7 @@ jobs:
   build-android:
     name: Build Android
     runs-on: ubuntu-latest
-    if: ${{ github.env.BUILD_ANDROID_FLAG == 'true' }}
+    if: ${{ env.BUILD_ANDROID_FLAG == 'true' }}
 
     steps:
       - name: Checkout code
