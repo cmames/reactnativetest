@@ -28,8 +28,8 @@ jobs:
     steps:
       - name: Show env var
         run: |
-          echo "BUILD_ANDROID_FLAG value: '${{ github.env.BUILD_ANDROID_FLAG }}'"
-          echo "Type of BUILD_ANDROID_FLAG: $(if [ "${{ github.env.BUILD_ANDROID_FLAG }}" = "true" ] || [ "${{ github.env.BUILD_ANDROID_FLAG }}" = "false" ]; then echo "boolean-like string"; else echo "other"; fi)"
+          echo "BUILD_ANDROID_FLAG value: '${{ env.BUILD_ANDROID_FLAG }}'"
+          echo "Type of BUILD_ANDROID_FLAG: $(if [ "${{ env.BUILD_ANDROID_FLAG }}" = "true" ] || [ "${{ env.BUILD_ANDROID_FLAG }}" = "false" ]; then echo "boolean-like string"; else echo "other"; fi)"
 
   build-android:
     name: Build Android
