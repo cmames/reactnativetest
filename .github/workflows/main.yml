@@ -23,18 +23,10 @@ permissions:
   contents: read 
   
 jobs:
-  debug-env:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Show env var
-        run: |
-          echo "BUILD_ANDROID_FLAG value: '${{ env.BUILD_ANDROID_FLAG }}'"
-          echo "Type of BUILD_ANDROID_FLAG: $(if [ "${{ env.BUILD_ANDROID_FLAG }}" = "true" ] || [ "${{ env.BUILD_ANDROID_FLAG }}" = "false" ]; then echo "boolean-like string"; else echo "other"; fi)"
-
   build-android:
     name: Build Android
     runs-on: ubuntu-latest
-    if: github.env.BUILD_ANDROID_FLAG == 'true'
+    if: ${{ env.BUILD_ANDROID_FLAG }} == 'true'
 
     steps:
       - name: Checkout code
