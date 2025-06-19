@@ -23,10 +23,26 @@ permissions:
   contents: read 
   
 jobs:
+  debug1:
+    runs-on: ubuntu-latest
+    if: github.env.BUILD_ANDROID_FLAG == 'true'
+    steps:
+      - run: echo "OK"
+  debug2:
+    runs-on: ubuntu-latest
+    if: ${{ github.env.BUILD_ANDROID_FLAG }}== 'true'
+    steps:
+      - run: echo "${{ github.env.BUILD_ANDROID_FLAG }}"
+  debug3:
+    runs-on: ubuntu-latest
+    if: github.env.BUILD_ANDROID_FLAG == 'true'
+    steps:
+      - run: echo "${{ env.BUILD_ANDROID_FLAG }}"
+
   build-android:
     name: Build Android
     runs-on: ubuntu-latest
-    if: ${{ env.BUILD_ANDROID_FLAG }} == 'true'
+    if: github.env.BUILD_ANDROID_FLAG == 'true'
 
     steps:
       - name: Checkout code
