@@ -23,9 +23,36 @@ permissions:
   contents: read 
   
 jobs:
+  dispatch_flags:
+    runs-on: ubuntu-latest
+    outputs:
+      should_build_android: ${{ steps.set_android_flag.outputs.build_android }}
+      should_deploy_android: ${{ steps.set_android_deploy_flag.outputs.deploy_android }}
+      should_build_ios: ${{ steps.set_ios_flag.outputs.build_ios }}
+      should_deploy_ios: ${{ steps.set_ios_deploy_flag.outputs.deploy_ios }}
+    
+    steps:
+      - name: Set Android Build Flag Output
+        id: set_android_flag
+        run: echo "build_android=${{ env.BUILD_ANDROID_FLAG }}" >> "$GITHUB_OUTPUT"
+
+      - name: Set Android Deploy Flag Output
+        id: set_android_deploy_flag
+        run: echo "deploy_android=${{ env.DEPLOY_ANDROID_FLAG }}" >> "$GITHUB_OUTPUT"
+
+      - name: Set iOS Build Flag Output
+        id: set_ios_flag
+        run: echo "build_ios=${{ env.BUILD_IOS_FLAG }}" >> "$GITHUB_OUTPUT"
+      
+      - name: Set iOS Deploy Flag Output
+        id: set_ios_deploy_flag
+        run: echo "deploy_ios=${{ env.DEPLOY_IOS_FLAG }}" >> "$GITHUB_OUTPUT"
+
   build-android:
     name: Build Android
+    needs: dispatch_flags
     runs-on: ubuntu-latest
+    if: ${{ needs.dispatch_flags.outputs.should_build_android == 'true' }}
 
     steps:
       - name: Checkout code
@@ -104,7 +131,9 @@ jobs:
 
   build-ios:
     name: Build iOS
+    needs: dispatch_flags
     runs-on: macos-latest
+    if: ${{ needs.dispatch_flags.outputs.should_build_ios == 'true' }}
 
     steps:
       - name: Checkout code
@@ -254,10 +283,10 @@ jobs:
 
   deploy-android:
     name: Deploy to Android Store
-    needs: build-android
+    needs: [dispatch_flags, build-android]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    
+    if: ${{ success() && needs.dispatch_flags.outputs.should_deploy_android == 'true' && github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+   
     steps:
       - name: Checkout code
         if: ${{ env.DEPLOY_ANDROID_FLAG == 'true' }} 
@@ -289,9 +318,9 @@ jobs:
 
   deploy-ios:
     name: Deploy to iOS Store
-    needs: build-ios
+    needs: [dispatch_flags, build-ios]
     runs-on: ubuntu-latest
-    if: ${{ github.env.DEPLOY_IOS_FLAG == 'true' && success() && github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+    if: ${{ success() && needs.dispatch_flags.outputs.should_deploy_ios == 'true' && github.ref == 'refs/heads/main' && github.event_name == 'push' }}
     
     steps:
       - name: Checkout code
