@@ -10,7 +10,7 @@ on:
 # Déclaration des variables d'environnement globales
 env:
   APP_NAME: "reactnativetest"
-  NODE_VERSION: '18.x'
+  NODE_VERSION: '19.x'
   # for Android
   BUILD_ANDROID_FLAG: 'true'
   DEPLOY_ANDROID_FLAG: 'true'
